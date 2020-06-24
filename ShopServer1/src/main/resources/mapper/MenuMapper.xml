@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qzh.shop.mapper.MenuMapper">
+    <select id="getAllMenu" resultMap="menus">
+       select a.id,a.auth_name,a.path,b.s_id,b.s_auth_name,b.s_path,b.s_one_menu
+       from first_menu a,second_menu b
+       where b.s_one_menu = a.id ;
+    </select>
+
+    <resultMap id="menus" type="com.qzh.shop.POJO.DO.FirstMenu">
+        <id column="id" property="id" />
+        <result column="auth_name" property="authName" />
+        <result column="path" property="path" />
+        <collection property="children" ofType="com.qzh.shop.POJO.DO.SecondMenu" >
+            <id column="s_id" property="sId" />
+            <result column="s_auth_name" property="sAuthName" />
+            <result column="s_path" property="sPath" />
+            <result column="s_one_menu" property="sOneMenu" />
+        </collection>
+    </resultMap>
+
+
+    <select id="getSectionMenu" resultMap="menu">
+       select a.id,a.auth_name,a.path,b.s_id,b.s_auth_name,b.s_path,b.s_one_menu
+       from first_menu a,second_menu b
+       where b.s_one_menu = a.id and a.id >=3;
+    </select>
+
+    <resultMap id="menu" type="com.qzh.shop.POJO.DO.FirstMenu">
+        <id column="id" property="id" />
+        <result column="auth_name" property="authName" />
+        <result column="path" property="path" />
+        <collection property="children" ofType="com.qzh.shop.POJO.DO.SecondMenu" >
+            <id column="s_id" property="sId" />
+            <result column="s_auth_name" property="sAuthName" />
+            <result column="s_path" property="sPath" />
+            <result column="s_one_menu" property="sOneMenu" />
+        </collection>
+    </resultMap>
+</mapper>

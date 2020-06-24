@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qzh.shop.mapper.ParameterMapper">
+
+    <select id="getAllCategories" resultMap="firstCategories">
+         select * from first_categories a left join second_categories  b on a.cat_id = b.ha_cat_pid
+    </select>
+
+    <resultMap id="firstCategories" type="com.qzh.shop.POJO.DO.FirstCategories">
+        <id column="cat_id" property="catId" />
+        <result column="cat_name" property="catName"/>
+        <result column="cat_pid" property="catPid"/>
+        <result column="cat_level" property="catLevel" />
+        <result column="cat_deleted" property="catDeleted" />
+        <collection property="children" ofType="com.qzh.shop.POJO.DO.SecondCategories">
+            <id column="ha_cat_id" property="catId" />
+            <result column="ha_cat_name" property="catName"/>
+            <result column="ha_cat_pid" property="catPid"/>
+            <result column="ha_cat_level" property="catLevel" />
+            <result column="ha_cat_deleted" property="catDeleted" />
+        </collection>
+    </resultMap>
+
+    <select id="getAllParameterById" resultType="com.qzh.shop.POJO.DO.Parameter">
+         select * from parameter where p_id = #{pId}
+    </select>
+
+
+    <select id="getAllAttributeById" resultType="com.qzh.shop.POJO.DO.Attribute">
+         select * from attribute where p_id = #{pId}
+    </select>
+
+
+
+    <insert id="insertParameterByPid">
+        insert into parameter (parameter,p_id) values (#{parameter},#{pId})
+    </insert>
+
+    <insert id="insertAttributeByPid">
+        insert into attribute (attribute,p_id) values (#{attribute},#{pId})
+    </insert>
+
+
+    <select id="getParameterById" resultType="com.qzh.shop.POJO.DO.Parameter">
+        select * from parameter where id = #{id};
+    </select>
+
+    <select id="getAttributeById" resultType="com.qzh.shop.POJO.DO.Attribute">
+        select * from attribute where id = #{id};
+    </select>
+
+    <update id="updataParameterById">
+        update parameter set parameter = #{parameter} where id = #{id}
+    </update>
+
+    <update id="updataAttributeById">
+        update attribute set attribute = #{attribute} where id = #{id}
+    </update>
+
+    <delete id="deleteParameterById">
+        delete from parameter where id = #{id}
+    </delete>
+
+    <delete id="deleteAttributeById">
+        delete from attribute where id = #{id}
+    </delete>
+
+</mapper>

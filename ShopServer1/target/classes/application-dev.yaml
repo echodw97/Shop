@@ -1,0 +1,25 @@
+server:
+  port: 8090
+
+#数据库连接配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shopserver?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+# mybatis-plus 配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.qzh.shop.POJO
+  configuration:
+    # 开启驼峰命名规则映射
+    map-underscore-to-camel-case: true
+    # 字段为空则不映射
+    call-setters-on-nulls: true
+    # 控制台打印sql语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

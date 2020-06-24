@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qzh.shop.mapper.CategoriesMapper">
+    <insert id="addFirstCategoriesName">
+        insert into  first_Categories (cat_name,cat_pid,cat_level) values (#{catName},#{catPid},0)
+    </insert>
+    <insert id="addSecondCategoriesName">
+         insert into second_categories (ha_cat_name,ha_cat_pid,ha_cat_level) values (#{catName},#{catPid},1)
+    </insert>
+
+
+
+    <delete id="deleteFirstCategoriesById">
+        delete from first_categories where cat_id = #{catId}
+    </delete>
+    <delete id="deleteSecondCategoriesById">
+        delete from second_categories where ha_cat_id = #{catId}
+    </delete>
+
+    <select id="getAllCategories" resultMap="firstCategories">
+    select * from first_categories a left join second_categories  b on a.cat_id = b.ha_cat_pid
+  </select>
+
+    <resultMap id="firstCategories" type="com.qzh.shop.POJO.DO.FirstCategories">
+        <id column="cat_id" property="catId" />
+        <result column="cat_name" property="catName"/>
+        <result column="cat_pid" property="catPid"/>
+        <result column="cat_level" property="catLevel" />
+        <result column="cat_deleted" property="catDeleted" />
+        <collection property="children" ofType="com.qzh.shop.POJO.DO.SecondCategories">
+            <id column="ha_cat_id" property="catId" />
+            <result column="ha_cat_name" property="catName"/>
+            <result column="ha_cat_pid" property="catPid"/>
+            <result column="ha_cat_level" property="catLevel" />
+            <result column="ha_cat_deleted" property="catDeleted" />
+        </collection>
+    </resultMap>
+
+    <select id="getAllCategoriesLike" resultMap="categories">
+        select * from first_categories a
+        left join second_categories  b
+        on a.cat_id = b.ha_cat_pid
+        where (cat_name = #{param3} or	ha_cat_name = #{param3})
+    </select>
+
+    <resultMap id="categories" type="com.qzh.shop.POJO.DO.FirstCategories">
+        <id column="cat_id" property="catId" />
+        <result column="cat_name" property="catName"/>
+        <result column="cat_pid" property="catPid"/>
+        <result column="cat_level" property="catLevel" />
+        <result column="cat_deleted" property="catDeleted" />
+        <collection property="children" ofType="com.qzh.shop.POJO.DO.SecondCategories">
+            <id column="ha_cat_id" property="catId" />
+            <result column="ha_cat_name" property="catName"/>
+            <result column="ha_cat_pid" property="catPid"/>
+            <result column="ha_cat_level" property="catLevel" />
+            <result column="ha_cat_deleted" property="catDeleted" />
+        </collection>
+    </resultMap>
+
+
+
+
+    <select id="getAllCategoriesParent" resultType="com.qzh.shop.POJO.DO.FirstCategories">
+          select * from first_categories
+    </select>
+
+
+
+    <select id="getFirstCategoriesById" resultType="com.qzh.shop.POJO.DO.FirstCategories">
+        select cat_id,cat_name,cat_level from first_categories where cat_id = #{catId};
+    </select>
+    <select id="getSecondCategoriesById" resultType="com.qzh.shop.POJO.DO.SecondCategories">
+        select ha_cat_id as cat_id,ha_cat_name as cat_name,ha_cat_level as cat_level from second_categories where ha_cat_id = #{catId};
+    </select>
+
+
+
+    <update id="updateFirstCategoriesById">
+        update first_categories set cat_name = #{catName} where cat_id = #{catId}
+    </update>
+    <update id="updateSecondCategoriesById">
+        update second_categories set ha_cat_name = #{catName} where ha_cat_id = #{catId}
+    </update>
+
+
+</mapper>
